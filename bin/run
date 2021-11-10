@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# USAGE: `bin/run 2021 23`
+
+padded_day=`printf %02d $2`
+
+cat "inputs/$1/$padded_day.txt" | nim r src/$1/d$padded_day.nim
