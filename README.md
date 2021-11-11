@@ -16,7 +16,10 @@ Now you can run `bin/get 2021 1` and similar commands to:
 You will need `nokogiri` (the ruby gem) installed globally, and `pandoc` (the
 amazing document converter written in Haskell) too.
 
+The solution template exports two procedures, aptly named `𝟙` and `𝟚` (the
+unicode double-stroke numbers).
+
 ## Running the solution
 
 When you have your code ready, just run `bin/run 2021 1` and similar commands
-to have the program compiled and the input file fed as `stdin` to it.
+to run the solution and print out the result.
