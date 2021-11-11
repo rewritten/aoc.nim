@@ -16,17 +16,5 @@ curl https://adventofcode.com/$1/day/$2/input -v -s --cookie "session=$SESSION" 
   > inputs/$1/$padded_day.txt
 
 if [ ! -f src/y$1/d$padded_day.nim ]; then
-  cat << NIM > src/y$1/d$padded_day.nim
-#[
-#  Advent of code $1 - Day $2
-]#
-
-import std/strutils
-
-proc 𝟙*(data: string): int =
-  discard
-
-proc 𝟚*(data: string): int =
-  discard
-NIM
+  cat bin/solution.nim | sed "s/__YEAR__/$1/" | sed "s/__DAY__/$2/" > src/y$1/d$padded_day.nim
 fi
