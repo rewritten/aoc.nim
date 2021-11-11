@@ -2,44 +2,33 @@
 #  Advent of code 2020 - Day 2
 ]#
 
-import std/parseutils
-import std/sequtils
 import std/strutils
+import std/sugar
 
-proc parse(str: string): (int, int, string, string) =
-  ##[ parse a line into the list of data ]##
-  # 11-16 h: thhrhrwhbshshsdhhhhr
-  var
-    pos = 0
-    min = ""
-    max = ""
-    ch = ""
-    pwd = ""
+iterator parse(data: string): (int, int, char, string) =
+  ##[
+    Parse lines into tuples of data.
 
-  pos += parseUntil(str, min, '-', pos) + 1
-  pos += parseUntil(str, max, ' ', pos) + 1
-  pos += parseUntil(str, ch, ':', pos) + 2
-  discard parseUntil(str, pwd, '\n', pos)
+    Given "11-16 h: thhrhrwhbshshsdhhhhr" it will yield (11, 16, 'h', "thhrhrwhbshshsdhhhhr").
+    ]##
 
-  return (parseInt(min), parseInt(max), ch, pwd)
-
+  for line in splitLines(data):
+    if line != "":
+      let t = collect:
+        for (token, isSep) in tokenize(line, {' ', '-', ':'}):
+          if not isSep: token
+      yield (parseInt(t[0]), parseInt(t[1]), t[2][0], t[3])
 
 proc 𝟙*(data: string): int =
-  let lines = splitLines(data).filterIt(it != "")
-
-  proc valid(line: string): bool =
-    let
-      (min, max, ch, pwd) = parse line
-      count = pwd.count ch
-    return min <= count and count <= max
-
-  return lines.countIt valid it
+  var count = 0
+  for (min, max, ch, pwd) in parse(data):
+    if pwd.count(ch) in min .. max:
+      count += 1
+  return count
 
 proc 𝟚*(data: string): int =
-  let lines = splitLines(data).filterIt(it != "")
-
-  proc valid(line: string): bool =
-    let (yes, no, ch, pwd) = parse line
-    return pwd[yes - 1] == ch[0] xor pwd[no - 1] == ch[0]
-
-  return lines.countIt valid it
+  var count = 0
+  for (lft, rgt, ch, pwd) in parse(data):
+    if pwd[lft - 1] == ch xor pwd[rgt - 1] == ch:
+      count += 1
+  return count

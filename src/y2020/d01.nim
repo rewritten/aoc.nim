@@ -2,30 +2,33 @@
 #  Advent of code 2020 - Day 1
 ]#
 
-import std/sets
+import std/intsets
 import std/sequtils
 import std/strutils
 import std/tables
 
-proc 𝟙*(data: string): int =
-  let numbers = splitLines(data).filterIt(it != "").mapIt(parseInt(it))
-  var waiting = initHashSet[int]()
+iterator numbers(data: string): int =
+  for line in splitLines(data):
+    if line != "":
+      yield parseInt line
 
-  for n in numbers:
-    if waiting.contains(n):
+proc 𝟙*(data: string): int =
+  var waiting = initIntSet()
+
+  for n in numbers(data):
+    if n in waiting:
       return n * (2020 - n)
     else:
       waiting.incl(2020 - n)
 
 proc 𝟚*(data: string): int =
-  let numbers = splitLines(data).filterIt(it != "").mapIt(parseInt(it))
-  var products_of_two = initTable[int, (int, int)]()
+  let ns = toSeq(numbers(data))
+  var pairwise_products = initTable[int, int]()
 
-  for m in numbers:
-    for n in numbers:
-      products_of_two[2020 - m - n] = (m, n)
+  for m in ns:
+    for n in ns:
+      pairwise_products[2020 - m - n] = m * n
 
-  for m in numbers:
-    if m in products_of_two:
-      let (n, o) = products_of_two[m]
-      return m * n * o
+  for m in ns:
+    if m in pairwise_products:
+      return m * pairwise_products[m]
