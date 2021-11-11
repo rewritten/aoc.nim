@@ -4,4 +4,4 @@
 
 padded_day=`printf %02d $2`
 
-cat "inputs/$1/$padded_day.txt" | nim r src/$1/d$padded_day.nim
+cat bin/runner.nim | sed "s/__YEAR__/$1/" | sed "s/__DAY__/$padded_day/" | nim r -

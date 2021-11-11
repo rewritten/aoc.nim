@@ -10,18 +10,11 @@ mkdir -p src/y$1
 curl https://adventofcode.com/$1/day/$2 -v -s --cookie "session=$SESSION" \
   | nokogiri -e 'puts $_.css("article")' \
   | pandoc -f html -t markdown \
-  > src/$1/d$padded_day.md
+  > src/y$1/d$padded_day.md
 
 curl https://adventofcode.com/$1/day/$2/input -v -s --cookie "session=$SESSION" \
   > inputs/$1/$padded_day.txt
 
 if [ ! -f src/y$1/d$padded_day.nim ]; then
-  cat << NIM > src/$1/d$padded_day.nim
-#[
-#  Advent of code $1 - Day $2
-]#
-
-let data = readAll(stdin)
-echo data
-NIM
+  cat bin/solution.nim | sed "s/__YEAR__/$1/" | sed "s/__DAY__/$2/" > src/y$1/d$padded_day.nim
 fi
