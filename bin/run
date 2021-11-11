@@ -4,18 +4,4 @@
 
 padded_day=`printf %02d $2`
 
-read -r -d '' code  <<NIM
-import src/y$1/d$padded_day;
-
-let data = readFile("inputs/$1/$padded_day.txt");
-
-echo();
-echo "╭─ Advent of Code $1 - Day $2 ─────────╮";
-echo "│";
-echo "│   Part 𝟙: ", 𝟙(data);
-echo "│   Part 𝟚: ", 𝟚(data);
-echo "│";
-echo "╰──────────────────────────────";
-NIM
-
-nim r --eval:"$code"
+cat bin/runner.nim | sed "s/__YEAR__/$1/" | sed "s/__DAY__/$padded_day/" | nim r -
