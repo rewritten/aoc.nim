@@ -1,8 +1,9 @@
 #[ This file is not meant to be run by itself ]#
 
+import std/strutils
 import src/y__YEAR__/d__DAY__
 
-let data = readFile("inputs/__YEAR__/__DAY__.txt")
+let data = readFile("inputs/__YEAR__/__DAY__.txt").strip
 
 echo()
 echo "╭─ Advent of Code ", __YEAR__, " - Day ", __DAY__, " ─────────╮"

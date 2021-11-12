@@ -5,10 +5,6 @@
 import std/sequtils
 import std/strutils
 
-iterator lines(data: string): seq[char] =
-  for line in splitLines(data):
-    if line != "": yield line.toSeq()
-
 iterator traverse(map: seq[seq[char]], start: (int, int), dir: (int, int)): char =
   let
     (dx, dy) = dir
@@ -24,13 +20,14 @@ iterator traverse(map: seq[seq[char]], start: (int, int), dir: (int, int)): char
     if x >= len(map): break
     yield map[x][y mod size]
 
-proc countTrees(data: string, dy: int, dx: int): int =
-  for ch in traverse(toSeq(lines(data)), (0, 0), (dx, dy)):
-    if ch == '#': result += 1
+proc countTrees(map: seq[seq[char]], dy: int, dx: int): int =
+  return toSeq(traverse(map, (0, 0), (dx, dy))).count('#')
 
 proc 𝟙*(data: string): int =
-  return countTrees(data, 3, 1)
+  let map = data.splitLines.mapIt(toSeq it)
+  return countTrees(map, 3, 1)
 
 proc 𝟚*(data: string): int =
-  return countTrees(data, 1, 1) * countTrees(data, 3, 1) * countTrees(data, 5,
-      1) * countTrees(data, 7, 1) * countTrees(data, 1, 2)
+  let map = data.splitLines.mapIt(toSeq it)
+  return countTrees(map, 1, 1) * countTrees(map, 3, 1) * countTrees(map, 5,
+      1) * countTrees(map, 7, 1) * countTrees(map, 1, 2)

@@ -13,11 +13,8 @@ iterator parse(data: string): (int, int, char, string) =
     ]##
 
   for line in splitLines(data):
-    if line != "":
-      let t = collect:
-        for (token, isSep) in tokenize(line, {' ', '-', ':'}):
-          if not isSep: token
-      yield (parseInt(t[0]), parseInt(t[1]), t[2][0], t[3])
+    let t = split(line, {' ', '-', ':'})
+    yield (parseInt(t[0]), parseInt(t[1]), t[2][0], t[4])
 
 proc 𝟙*(data: string): int =
   var count = 0

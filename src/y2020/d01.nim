@@ -7,22 +7,17 @@ import std/sequtils
 import std/strutils
 import std/tables
 
-iterator numbers(data: string): int =
-  for line in splitLines(data):
-    if line != "":
-      yield parseInt line
-
 proc 𝟙*(data: string): int =
   var waiting = initIntSet()
 
-  for n in numbers(data):
+  for n in data.splitLines.mapIt(parseInt it):
     if n in waiting:
       return n * (2020 - n)
     else:
       waiting.incl(2020 - n)
 
 proc 𝟚*(data: string): int =
-  let ns = toSeq(numbers(data))
+  let ns = data.splitLines.mapIt(parseInt it)
   var pairwise_products = initTable[int, int]()
 
   for m in ns:
